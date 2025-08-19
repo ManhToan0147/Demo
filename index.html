@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Báo cáo quỹ lương & phân bổ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#1E63F3;
+  --blue-600:#0F55CC;
+  --blue-50:#F5F8FF;
+  --bg:#F6F8FC;
+  --card:#FFFFFF;
+  --text:#0F172A;
+  --muted:#5B6477;
+  --line:#E6EAF2;
+  --green:#14B86E;
+  --red:#E54848;
+  --shadow:0 6px 24px rgba(20,105,255,.06), 0 2px 8px rgba(20,105,255,.05);
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:"Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  margin:0; background:var(--bg); color:var(--text);
+}
+.container{max-width:1320px;margin:28px auto;padding:0 20px}
+
+/* NAV */
+.topnav{position:sticky;top:0;z-index:20;background:#ffffffcc;backdrop-filter:saturate(160%) blur(6px);border-bottom:1px solid var(--line)}
+.topnav .row{max-width:1320px;margin:0 auto;display:flex;gap:10px;flex-wrap:wrap;padding:10px 20px}
+.pill{border:1px solid #dbe6ff;background:#eef4ff;color:var(--blue);padding:7px 12px;border-radius:999px;font-weight:700;text-decoration:none}
+.pill:hover{background:#e5efff}
+
+/* SECTION */
+.section{margin:26px 0 14px}
+.section .bar{
+  background:var(--blue);color:#fff; padding:13px 16px; border-radius:10px;
+  font-weight:800; letter-spacing:.2px; box-shadow:var(--shadow);
+}
+
+/* GRID + CARD */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media (max-width:1000px){.grid-2{grid-template-columns:1fr}}
+.card{
+  background:var(--card);border:1px solid var(--line);
+  border-radius:var(--radius); box-shadow:var(--shadow); padding:18px;
+}
+.card h3{margin:0 0 12px;font-size:18px}
+.meta{color:var(--muted);font-size:13px}
+
+/* METRICS (highlight nhỏ bên trong card) */
+.empha{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:6px 0 12px}
+.metric{
+  display:flex;justify-content:space-between;align-items:center;
+  background:var(--blue-50);border:1px dashed var(--blue-600);
+  border-radius:12px;padding:10px 12px
+}
+.metric .k{color:var(--muted)}
+.metric .v{color:var(--blue-600);font-weight:800}
+
+/* KPI chips */
+.kpi-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:10px}
+.kpi{border:1px solid var(--line);background:#F8FAFF;border-radius:12px;padding:12px;text-align:center}
+.kpi .lbl{font-size:12px;color:var(--muted)}
+.kpi .num{font-size:20px;font-weight:800;color:var(--blue-600)}
+.kpi.red .num{color:var(--red)}
+
+/* TABLES: cố định cột để không lệch */
+.table{width:100%;border-collapse:separate;border-spacing:0;table-layout:fixed}
+.table th,.table td{padding:12px;border-bottom:1px solid var(--line);font-size:14px;vertical-align:middle}
+.table thead th{background:#F3F6FF;text-align:left;font-weight:700}
+.right{text-align:right}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.pos{color:var(--green);font-weight:700}
+.neg{color:var(--red);font-weight:700}
+
+/* HIGHLIGHTS */
+.hl-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:12px}
+.tile{
+  background:linear-gradient(90deg, var(--blue), #2A83FF);
+  color:#fff;border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)
+}
+.tile .name{font-weight:700;opacity:.95}
+.tile .val{font-size:18px;font-weight:900;margin-top:4px}
+.banner{
+  background:var(--blue);color:#fff;border-radius:12px;padding:16px;
+  display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-weight:800
+}
+.banner .big{font-size:22px}
+
+/* Helpers */
+.sub{color:var(--muted);font-size:12px;margin-top:6px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="topnav">
+  <div class="row">
+    <a class="pill" href="#pv">Sản lượng</a>
+    <a class="pill" href="#qty-re">Chất lượng (Rung ép)</a>
+    <a class="pill" href="#hm">Vệ sinh & Bảo dưỡng</a>
+    <a class="pill" href="#pc">Chi phí sản xuất</a>
+    <a class="pill" href="#ee">Chi phí phát sinh</a>
+    <a class="pill" href="#adj">Quỹ lương trước và sau điều chỉnh</a>
+    <a class="pill" href="#alloc">Phân bổ lương</a>
+  </div>
+</nav>
+
+<div class="container">
+  <!-- A. SẢN LƯỢNG -->
+  <div id="pv" class="section"><div class="bar">A. Sản lượng (Product volume)</div></div>
+
+  <div class="grid-2">
+    <!-- RUNG ÉP -->
+    <div class="card">
+      <h3>Rung ép — Sản lượng</h3>
+      <div class="empha">
+        <div class="metric"><div class="k">Tổng sản lượng (m²)</div><div class="v num">14.694,44</div></div>
+        <div class="metric"><div class="k">Tổng thành tiền (đ)</div><div class="v num">994.882.800</div></div>
+      </div>
+      <table class="table">
+        <colgroup><col style="width:44%"><col style="width:18%"><col style="width:18%"><col style="width:20%"></colgroup>
+        <thead>
+          <tr><th>Nhóm sản phẩm</th><th class="right">Số lượng (m²)</th><th class="right">Đơn giá</th><th class="right">Thành tiền (đ)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Nhóm 1RL</td><td class="right num">615,29</td><td class="right num">—</td><td class="right num">51.683.940</td></tr>
+          <tr><td>Nhóm 1SL</td><td class="right num">3.604,59</td><td class="right num">—</td><td class="right num">302.785.560</td></tr>
+          <tr><td>Nhóm 2RL</td><td class="right num">1.246,91</td><td class="right num">—</td><td class="right num">89.777.160</td></tr>
+          <tr><td>Nhóm 2SL</td><td class="right num">4.257,99</td><td class="right num">—</td><td class="right num">306.575.280</td></tr>
+          <tr><td>Nhóm 4R</td><td class="right num">630,00</td><td class="right num">—</td><td class="right num">25.200.000</td></tr>
+          <tr><td>Nhóm 4RL</td><td class="right num">909,32</td><td class="right num">—</td><td class="right num">43.647.120</td></tr>
+          <tr><td>Nhóm 4SL</td><td class="right num">1.442,93</td><td class="right num">—</td><td class="right num">69.260.400</td></tr>
+          <tr><td>Nhóm 6RL</td><td class="right num">751,41</td><td class="right num">—</td><td class="right num">18.033.840</td></tr>
+          <tr><td>Nhóm 6SL</td><td class="right num">1.236,02</td><td class="right num">—</td><td class="right num">29.664.360</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- MÀI -->
+    <div class="card">
+      <h3>Mài — Sản lượng</h3>
+      <div class="empha">
+        <div class="metric"><div class="k">Tổng sản lượng (m²)</div><div class="v num">28.585,60</div></div>
+        <div class="metric"><div class="k">Tổng thành tiền (đ)</div><div class="v num">249.458.122</div></div>
+      </div>
+      <table class="table">
+        <colgroup><col style="width:44%"><col style="width:18%"><col style="width:18%"><col style="width:20%"></colgroup>
+        <thead>
+          <tr><th>Nhóm sản phẩm</th><th class="right">Số lượng (m²)</th><th class="right">Đơn giá</th><th class="right">Thành tiền (đ)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Nhóm 1</td><td class="right num">8.337,80</td><td class="right num">—</td><td class="right num">83.377.650</td></tr>
+          <tr><td>Nhóm 2</td><td class="right num">10.866,10</td><td class="right num">—</td><td class="right num">97.794.945</td></tr>
+          <tr><td>Nhóm 3</td><td class="right num">2.613,60</td><td class="right num">—</td><td class="right num">20.908.680</td></tr>
+          <tr><td>Nhóm 4</td><td class="right num">6.768,10</td><td class="right num">—</td><td class="right num">47.376.847</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- B. CHẤT LƯỢNG (RUNG ÉP) -->
+  <div id="qty-re" class="section"><div class="bar">B. Chất lượng (Rung ép)</div></div>
+  <div class="card">
+    <div class="kpi-strip">
+      <div class="kpi"><div class="lbl">Tỉ lệ A1 ban đầu</div><div class="num">87,5%</div></div>
+      <div class="kpi"><div class="lbl">Tỉ lệ A1 cuối cùng</div><div class="num">92,3%</div></div>
+      <div class="kpi red"><div class="lbl">Tỉ lệ C (không đạt)</div><div class="num">2,8%</div></div>
+    </div>
+
+    <table class="table">
+      <colgroup><col style="width:64%"><col style="width:18%"><col style="width:18%"></colgroup>
+      <thead><tr><th>Nội dung</th><th class="right">Số lượng (m²)</th><th class="right">Thành tiền (đ)</th></tr></thead>
+      <tbody>
+        <tr><td>Thưởng phạt A1 (m²) ban đầu</td><td class="right num">2.450</td><td class="right num pos">12.250.000</td></tr>
+        <tr><td>Thưởng phạt A1 (m²) cuối cùng</td><td class="right num">2.850</td><td class="right num pos">18.500.000</td></tr>
+        <tr><td>Phạt A1 (m²) cuối cùng</td><td class="right num">180</td><td class="right num neg">-2.700.000</td></tr>
+        <tr><td>Khấu trừ sản lượng B + C (m²)</td><td class="right num">320</td><td class="right num neg">-8.950.000</td></tr>
+        <tr><td><strong>Tổng tiền vào quỹ lương Rung ép</strong></td><td></td><td class="right num pos">19.100.000</td></tr>
+      </tbody>
+    </table>
+    <div class="sub">Số dương hiển thị xanh lá, số âm hiển thị đỏ.</div>
+  </div>
+
+  <!-- C. VỆ SINH & BẢO DƯỠNG -->
+  <div id="hm" class="section"><div class="bar">C. Vệ sinh & Bảo dưỡng</div></div>
+  <div class="grid-2">
+    <div class="card">
+      <h3>Rung ép</h3>
+      <table class="table">
+        <colgroup><col style="width:64%"><col style="width:18%"><col style="width:18%"></colgroup>
+        <thead><tr><th>Danh mục vệ sinh – bảo dưỡng</th><th class="right">Điểm thực tế</th><th class="right">Thưởng/Phạt (đ)</th></tr></thead>
+        <tbody>
+          <tr><td>Điểm bảo dưỡng thiết bị</td><td class="right num">—</td><td class="right num neg">-7.347.218</td></tr>
+          <tr><td>Điểm vệ sinh</td><td class="right num">—</td><td class="right num neg">-8.000.000</td></tr>
+          <tr><td><strong>Tổng thưởng/phạt</strong></td><td></td><td class="right num neg">-15.347.218</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Mài</h3>
+      <table class="table">
+        <colgroup><col style="width:64%"><col style="width:18%"><col style="width:18%"></colgroup>
+        <thead><tr><th>Danh mục vệ sinh – bảo dưỡng</th><th class="right">Điểm thực tế</th><th class="right">Thưởng/Phạt (đ)</th></tr></thead>
+        <tbody>
+          <tr><td>Điểm bảo dưỡng thiết bị</td><td class="right num">—</td><td class="right num neg">-4.287.836</td></tr>
+          <tr><td>Điểm vệ sinh</td><td class="right num">—</td><td class="right num neg">-6.000.000</td></tr>
+          <tr><td><strong>Tổng thưởng/phạt</strong></td><td></td><td class="right num neg">-10.287.836</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- D. CHI PHÍ SẢN XUẤT -->
+  <div id="pc" class="section"><div class="bar">D. Chi phí sản xuất (Production cost)</div></div>
+  <div class="card">
+    <!-- Highlight nằm trong card -->
+    <div class="hl-tiles">
+      <div class="tile"><div class="name">Quỹ lương Rung ép (từ Chi phí sản xuất)</div><div class="val">16.717.890,54 đ</div></div>
+      <div class="tile"><div class="name">Quỹ lương Mài (từ Chi phí sản xuất)</div><div class="val">12.186.355,83 đ</div></div>
+      <div class="tile"><div class="name">Giá trị thưởng/phạt (tổng)</div><div class="val">28.904.246,37 đ</div></div>
+    </div>
+
+    <table class="table">
+      <!-- ĐÃ BỎ cột Chi phí tháng -->
+      <colgroup>
+        <col style="width:26%"><col style="width:8%"><col style="width:16%"><col style="width:10%">
+        <col style="width:18%"><col style="width:11%"><col style="width:11%">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Tên tài nguyên</th><th>Phân bổ</th>
+          <th class="right">Mức chênh lệch GT khoán</th><th>Đơn vị</th>
+          <th class="right">Giá trị thưởng phạt</th>
+          <th class="right">Quỹ RE</th><th class="right">Quỹ Mài</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Nguyên vật liệu</td><td>RE</td><td class="right num">10.909,5</td><td>kg</td><td class="right num">75.511.032,61</td><td class="right num">75.511.032,61</td><td class="right num">0</td></tr>
+        <tr><td>Điện rung ép</td><td>RE</td><td class="right num neg">-15.710,6</td><td>kw</td><td class="right num neg">-29.944.462,02</td><td class="right num neg">-29.944.462,02</td><td class="right num">0</td></tr>
+        <tr><td>Gas</td><td>RE</td><td class="right num neg">-433,4</td><td>kg</td><td class="right num neg">-8.695.929,865</td><td class="right num neg">-8.695.929,865</td><td class="right num">0</td></tr>
+        <tr><td>Acetol</td><td>RE</td><td class="right num neg">-57,9</td><td>lít</td><td class="right num neg">-1.604.767,877</td><td class="right num neg">-1.604.767,877</td><td class="right num">0</td></tr>
+        <tr><td>Nilon PE</td><td>RE</td><td class="right num">224,3</td><td>kg</td><td class="right num">5.697.093,532</td><td class="right num">5.697.093,532</td><td class="right num">0</td></tr>
+        <tr><td>Điện mài</td><td>Mài</td><td class="right num">9.566,4</td><td>kw</td><td class="right num">12.763.461,48</td><td class="right num">0</td><td class="right num">12.763.461,48</td></tr>
+        <tr><td>Khuôn - nắp cao su Z175</td><td>RE</td><td class="right num neg">-11.496.225,23</td><td>VND</td><td class="right num neg">-11.496.225,23</td><td class="right num neg">-11.496.225,23</td><td class="right num">0</td></tr>
+        <tr><td>Chất chống dính</td><td>RE</td><td class="right num neg">-12.459.308,03</td><td>VND</td><td class="right num neg">-12.459.308,03</td><td class="right num neg">-12.459.308,03</td><td class="right num">0</td></tr>
+        <tr><td>Giấy lót 2 mặt Distributor</td><td>RE</td><td class="right num neg">-289.542,5859</td><td>VND</td><td class="right num neg">-289.542,5859</td><td class="right num neg">-289.542,5859</td><td class="right num">0</td></tr>
+        <tr><td>Dụng cụ mài kim cương</td><td>Mài</td><td class="right num">0</td><td>VND</td><td class="right num">0</td><td class="right num">0</td><td class="right num">0</td></tr>
+        <tr><td>Đá độ bóng cao (kể cả bàn chải)</td><td>Mài</td><td class="right num neg">-577.105,6577</td><td>VND</td><td class="right num neg">-577.105,6577</td><td class="right num">0</td><td class="right num neg">-577.105,6577</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- E. CHI PHÍ PHÁT SINH -->
+  <div id="ee" class="section"><div class="bar">E. Chi phí phát sinh</div></div>
+  <div class="card">
+    <table class="table">
+      <colgroup><col><col style="width:12%"><col style="width:20%"><col style="width:20%"><col style="width:20%"></colgroup>
+      <thead><tr><th>Chi phí phát sinh</th><th>Loại SX</th><th class="right">Tổng tiền chi phí</th><th class="right">Quỹ RE</th><th class="right">Quỹ Mài</th></tr></thead>
+      <tbody>
+        <tr><td>Thưởng phạt số sản phẩm chạy trong tháng</td><td>RE</td><td class="right num">0</td><td class="right num">0</td><td class="right num">0</td></tr>
+        <tr><td>Tiền chạy mẫu</td><td>Mài</td><td class="right num">45.000.000</td><td class="right num">0</td><td class="right num">45.000.000</td></tr>
+        <tr><td>HC dừng theo KH</td><td>RE</td><td class="right num">212.400.000</td><td class="right num">212.400.000</td><td class="right num">0</td></tr>
+        <tr><td>HC dừng theo KH</td><td>Mài</td><td class="right num">21.600.000</td><td class="right num">0</td><td class="right num">21.600.000</td></tr>
+        <tr><td>RE nhận hỗ trợ từ SSC+NM2</td><td>RE</td><td class="right num neg">-3.600.000</td><td class="right num neg">-3.600.000</td><td class="right num">0</td></tr>
+        <tr><td>Hỗ trợ PKTH</td><td>RE</td><td class="right num">0</td><td class="right num">0</td><td class="right num">0</td></tr>
+        <tr><td>Hỗ trợ DƯỢC</td><td>RE</td><td class="right num">0</td><td class="right num">0</td><td class="right num">0</td></tr>
+        <tr><td>Bộ phận Mài nhận hỗ trợ</td><td>Mài</td><td class="right num">0</td><td class="right num">0</td><td class="right num">0</td></tr>
+      </tbody>
+      <tfoot>
+        <tr><td class="right" colspan="2"><strong>Tổng cộng</strong></td>
+          <td class="right num">275.400.000</td><td class="right num">208.800.000</td><td class="right num">66.600.000</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- F. QUỸ LƯƠNG TRƯỚC & SAU ĐIỀU CHỈNH -->
+  <div id="adj" class="section"><div class="bar">F. Quỹ lương trước và sau điều chỉnh</div></div>
+  <div class="card">
+    <h3>Quỹ lương khoán trước điều chỉnh</h3>
+    <div class="hl-tiles">
+      <div class="tile"><div class="name">Rung ép</div><div class="val">1.154.988.928 đ</div></div>
+      <div class="tile"><div class="name">Mài</div><div class="val">272.956.641,4 đ</div></div>
+      <div class="tile"><div class="name">Tổng cộng</div><div class="val">1.427.945.569,4 đ</div></div>
+    </div>
+
+    <h3 style="margin-top:6px">Điều chỉnh quỹ lương</h3>
+    <table class="table">
+      <colgroup><col><col style="width:20%"><col style="width:20%"></colgroup>
+      <thead><tr><th>Mục</th><th class="right">Rung ép</th><th class="right">Mài</th></tr></thead>
+      <tbody>
+        <tr><td>Quỹ lương còn dư tháng trước gửi lại</td><td class="right num">—</td><td class="right num">—</td></tr>
+        <tr><td>Quỹ lương gửi lại cho các tháng sau</td><td class="right num">0</td><td class="right num neg">-2.500.000</td></tr>
+        <tr><td>Quỹ lương trả nợ công ty</td><td class="right num">—</td><td class="right num">—</td></tr>
+        <tr><td>Vay lương công ty</td><td class="right num">—</td><td class="right num">—</td></tr>
+        <tr><td><strong>Quỹ lương sau điều chỉnh</strong></td><td class="right num"><strong>1.152.488.928</strong></td><td class="right num"><strong>272.956.641</strong></td></tr>
+        <tr><td>Quỹ lương khuyến khích sản xuất</td><td class="right num pos">1.500.000</td><td class="right num">0</td></tr>
+        <tr><td><strong>Quỹ lương còn lại</strong></td><td class="right num"><strong>1.150.988.928</strong></td><td class="right num"><strong>272.956.641</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="banner">
+    <div>Quỹ lương còn lại để phân bổ cho nhân viên</div>
+    <div class="big num">1.423.945.569</div>
+  </div>
+
+  <!-- G. PHÂN BỔ LƯƠNG -->
+  <div id="alloc" class="section"><div class="bar">G. Phân bổ lương</div></div>
+
+  <!-- KHỐI CÔNG NHÂN -->
+  <div class="card">
+    <h3>Khối Công nhân</h3>
+    <div class="meta">Cột đồng bộ: <b>Bộ phận</b> | <b>Đơn giá</b> | <b>Tổng nguồn quỹ</b> | <b>Số nhân sự</b> | <b>Lương TB</b></div>
+    <table class="table">
+      <colgroup><col><col style="width:15%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
+      <thead><tr><th>Bộ phận</th><th class="right">Đơn giá</th><th class="right">Tổng nguồn quỹ (đ)</th><th class="right">Số nhân sự</th><th class="right">Lương TB</th></tr></thead>
+      <tbody>
+        <tr><td>Tổng Quỹ lương công nhân thiết bị</td><td class="right num">—</td><td class="right num">38.446.530</td><td class="right num">2,30</td><td class="right num">16.715.883</td></tr>
+        <tr><td>Quỹ lương CBSX</td><td class="right num">—</td><td class="right num">24.170.767</td><td class="right num">0,92</td><td class="right num">26.272.573</td></tr>
+        <tr><td>Quỹ lương Sửa đá</td><td class="right num">—</td><td class="right num">42.586.590</td><td class="right num">2,22</td><td class="right num">19.183.149</td></tr>
+        <tr><td>Quỹ lương trưởng ca hành chính</td><td class="right num">—</td><td class="right num">128.910.760</td><td class="right num">4,85</td><td class="right num">26.579.538</td></tr>
+        <tr><td>Quỹ lương công nhân rung ép</td><td class="right num">—</td><td class="right num">924.244.109</td><td class="right num">48,53</td><td class="right num">19.044.799</td></tr>
+        <tr><td>Quỹ lương công nhân mài hoàn thiện</td><td class="right num">—</td><td class="right num">265.586.812</td><td class="right num">18,79</td><td class="right num">14.134.476</td></tr>
+      </tbody>
+    </table>
+    <div class="banner"><div>Tổng Khối Công nhân</div><div class="big num">Quỹ: 1.423.945.568 · Nhân sự: 77,61 · Lương TB: 18.347.449,66</div></div>
+  </div>
+
+  <!-- KHỐI CÁN BỘ / QUẢN LÝ -->
+  <div class="card" style="margin-top:14px">
+    <h3>Khối Cán bộ / Quản lý</h3>
+    <div class="meta">Cột đồng bộ: <b>Bộ phận</b> | <b>Đơn giá</b> | <b>Tổng nguồn quỹ</b> | <b>Số nhân sự</b> | <b>Lương TB</b></div>
+    <table class="table">
+      <colgroup><col><col style="width:15%"><col style="width:20%"><col style="width:18%"><col style="width:20%"></colgroup>
+      <thead><tr><th>Bộ phận</th><th class="right">Đơn giá</th><th class="right">Tổng nguồn quỹ (đ)</th><th class="right">Số người</th><th class="right">Lương TB</th></tr></thead>
+      <tbody>
+        <tr><td>Trưởng đơn vị</td><td class="right num">—</td><td class="right num">60.469.899</td><td class="right num">1,00</td><td class="right num">60.469.899</td></tr>
+        <tr><td>Phó trưởng đơn vị</td><td class="right num">—</td><td class="right num">46.373.037</td><td class="right num">1,00</td><td class="right num">46.373.037</td></tr>
+        <tr><td>Khối kỹ sư Mài</td><td class="right num">—</td><td class="right num">20.530.857</td><td class="right num">1,00</td><td class="right num">20.530.857</td></tr>
+        <tr><td>Khối kỹ sư Thiết bị</td><td class="right num">—</td><td class="right num">22.445.587</td><td class="right num">1,00</td><td class="right num">22.445.587</td></tr>
+        <tr><td>Khối kỹ sư Rung ép</td><td class="right num">—</td><td class="right num">122.567.996</td><td class="right num">5,00</td><td class="right num">24.513.599</td></tr>
+      </tbody>
+    </table>
+    <div class="banner"><div>Tổng Khối Cán bộ / Quản lý</div><div class="big num">Quỹ: 272.387.376 · Nhân sự: 9,00 · Lương TB: 30.265.264</div></div>
+  </div>
+
+  <div style="height:28px"></div>
+</div>
+</body>
+</html>
