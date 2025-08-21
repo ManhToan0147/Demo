@@ -2,8 +2,8 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Phân bổ chi tiết • TX chung, HSL + 3P, BSC toàn trang</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phân bổ chi tiết • CN & QL-KS</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -14,12 +14,11 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font-family:"Inter",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-.container{max-width:1320px;margin:26px auto 40px;padding:0 20px}
+.container{max-width:1320px;margin:28px auto 42px;padding:0 18px}
 .section{margin:18px 0}
 .bar{background:var(--blue);color:#fff;padding:12px 16px;border-radius:10px;font-weight:800;box-shadow:var(--shadow)}
 .card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius);margin-top:12px}
-.card .hd{padding:14px 16px 0 16px;font-weight:700}
-.card .body{padding:12px 16px 18px 16px}
+.card .body{padding:14px 16px 18px 16px}
 
 /* table */
 .table-wrap{overflow-x:auto}
@@ -31,187 +30,151 @@ th.center,td.center{text-align:center}
 .num{font-variant-numeric:tabular-nums}
 .tot{background:#eef3ff;font-weight:800}
 
-/* inputs xanh */
+/* inputs */
 input[type="number"], select{
   width:100%;padding:9px 12px;border:1px solid #dbe6ff;border-radius:10px;
   background:var(--blue-50);outline:none;color:#0f2f6b;font-weight:700;line-height:1.2;
 }
+td input[type="number"]{text-align:right;padding-right:12px;height:36px;line-height:36px}
+td.right select{ text-align-last:right; padding-right:28px;}
+td.center select{ text-align-last:center;}
 input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0; }
-select{appearance:none;background-image:
-  linear-gradient(45deg, transparent 50%, #5277ff 50%),
-  linear-gradient(135deg, #5277ff 50%, transparent 50%),
-  linear-gradient(to right, transparent, transparent);
-  background-position: calc(100% - 16px) 50%, calc(100% - 10px) 50%, 0 0;
-  background-size: 6px 6px, 6px 6px, 100% 100%;
-  background-repeat:no-repeat;
-}
+input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 
 /* badges */
 .kpi{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
 .badge{background:#eef4ff;border:1px solid #dce8ff;border-radius:999px;padding:8px 12px;font-weight:800;color:var(--blue-600)}
 .small{font-size:12px;color:var(--muted);margin-top:8px}
 
-/* ===== Align inputs to the right to match right‑aligned headers ===== */
-
-/* số nằm bên phải */
-td input[type="number"]{
-  text-align: right;
-  padding-right: 12px;     /* tạo khoảng cách để không dính mép */
-  height: 36px;            /* đồng bộ chiều cao với hàng bảng */
-  line-height: 36px;
-}
-
-/* select trong các cột right cũng căn phải (nếu có) */
-td.right select{
-  text-align-last: right;  /* Chrome/Edge/FF */
-  padding-right: 28px;
-}
-
-/* select ở cột giữa (Nhóm tham chiếu) giữ center */
-td.center select{
-  text-align-last: center;
-}
-
-/* giữ mọi ô thẳng hàng theo chiều dọc */
-th, td{ vertical-align: middle; }
-
-
+/* highlight lỗi */
+.input-error{border-color:var(--red)!important;background:#fff4f4!important}
 </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- Tổng hợp -->
   <div class="section"><div class="bar">Tổng hợp</div></div>
-  <div class="card">
-    <div class="body">
-      <div class="kpi">
-        <span class="badge">Quỹ RE còn lại: <span id="fundRE" class="num">1,150,988,928</span></span>
-        <span class="badge">Quỹ Mài còn lại: <span id="fundMAI" class="num">272,956,641</span></span>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <colgroup><col><col style="width:20%"><col style="width:25%"></colgroup>
-          <thead><tr><th>Khối</th><th class="right">Tổng số người</th><th class="right">Tổng quỹ lương (đ)</th></tr></thead>
-          <tbody>
-            <tr><td>Tổng khối Công nhân</td><td class="right num" id="sumCN">0</td><td class="right num" id="sumFundCN">0</td></tr>
-            <tr><td>Tổng khối Quản lý & Kĩ sư</td><td class="right num" id="sumQL">0</td><td class="right num" id="sumFundQL">0</td></tr>
-          </tbody>
-          <tfoot>
-            <tr class="tot"><td>Tổng cộng</td><td class="right num" id="sumPeople">0</td><td class="right num" id="sumFund">0</td></tr>
-          </tfoot>
-        </table>
-      </div>
+  <div class="card"><div class="body">
+    <div class="kpi">
+      <span class="badge">Quỹ RE còn lại: <span id="fundRE" class="num">1,150,988,928</span></span>
+      <span class="badge">Quỹ Mài còn lại: <span id="fundMAI" class="num">272,956,641</span></span>
     </div>
-  </div>
+    <div class="table-wrap">
+      <table>
+        <colgroup><col><col style="width:22%"><col style="width:26%"></colgroup>
+        <thead><tr><th>Khối</th><th class="right">Tổng số người</th><th class="right">Tổng quỹ lương (đ)</th></tr></thead>
+        <tbody>
+          <tr><td>Tổng khối Công nhân</td><td class="right num" id="sumCN">0</td><td class="right num" id="sumFundCN">0</td></tr>
+          <tr><td>Tổng khối Quản lý & Kĩ sư</td><td class="right num" id="sumQL">0</td><td class="right num" id="sumFundQL">0</td></tr>
+        </tbody>
+        <tfoot>
+          <tr class="tot"><td>Tổng cộng</td><td class="right num" id="sumPeople">0</td><td class="right num" id="sumFund">0</td></tr>
+        </tfoot>
+      </table>
+    </div>
+  </div></div>
 
   <!-- KHỐI 1: CÔNG NHÂN -->
   <div class="section"><div class="bar">Khối 1 – CÔNG NHÂN</div></div>
-  <div class="card">
-    <div class="body table-wrap">
-      <table id="tblCN">
+  <div class="card"><div class="body table-wrap">
+    <table id="tblCN">
+      <colgroup>
+        <col style="width:28%"><col style="width:12%"><col style="width:12%"><col style="width:18%"><col style="width:12%"><col style="width:18%">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Bộ phận</th>
+          <th class="center">Nguồn</th>
+          <th class="right">% phân bổ</th>
+          <th class="right">Quỹ lương (đ)</th>
+          <th class="right">Số NS</th>
+          <th class="right">Lương TB (đ)</th>
+        </tr>
+      </thead>
+      <tbody id="cnBody"></tbody>
+      <tfoot>
+        <tr class="tot">
+          <td>Tổng (CN)</td><td></td><td></td>
+          <td class="right num" id="cnFund">0</td>
+          <td class="right num" id="cnPeople">0</td>
+          <td class="right num" id="cnAvgAll">0</td>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="small">* Hai dòng “Công nhân rung ép / mài hoàn thiện” tự cân = <b>100 − tổng % cùng nguồn − tổng % TX</b> (không âm). Có cảnh báo nếu vượt 100.</div>
+    <div class="kpi" style="margin-top:10px">
+      <span class="badge">Lương TB CN RE: <span class="num" id="avgCNRE">0</span></span>
+      <span class="badge">Lương TB CN Mài: <span class="num" id="avgCNMAI">0</span></span>
+      <span class="badge">Lương TB CN TX: <span class="num" id="avgCNAll">0</span></span>
+    </div>
+  </div></div>
+
+  <!-- KHỐI 2: QUẢN LÝ & KĨ SƯ -->
+  <div class="section"><div class="bar">Khối 2 – QUẢN LÝ & KĨ SƯ</div></div>
+  <div class="card"><div class="body">
+    <div class="kpi">
+      <span class="badge">BSC (chung): <input id="defaultBSC" type="number" step="0.01" value="0.93" style="width:90px;margin-left:6px"></span>
+      <span class="badge">Đơn giá: <input id="unit" type="number" step="1000" value="1000000" style="width:140px;margin-left:6px"></span>
+      <span class="badge">Công định mức: <input id="std" type="number" step="0.1" value="22" style="width:90px;margin-left:6px"></span>
+    </div>
+
+    <div class="table-wrap">
+      <table id="tblQL">
         <colgroup>
-          <col style="width:28%"><col style="width:12%"><col style="width:12%"><col style="width:18%"><col style="width:12%"><col style="width:18%">
+          <col style="width:22%"><col style="width:12%"><col style="width:10%"><col style="width:12%"><col style="width:12%"><col style="width:10%"><col style="width:10%"><col style="width:12%">
         </colgroup>
         <thead>
           <tr>
             <th>Bộ phận</th>
-            <th class="center">Nguồn</th>
-            <th class="right">% phân bổ</th>
-            <th class="right">Quỹ lương (đ)</th>
-            <th class="right">Số NS</th>
-            <th class="right">Tổng quỹ lương (đ)</th>
+            <th class="center">Nhóm tham chiếu</th>
+            <th class="right">KPI</th>
+            <th class="right">Hệ số lương</th>
+            <th class="right">Hệ số khoán</th>
+            <th class="right">Hệ số 3P</th>
+            <th class="right">Công</th>
+            <th class="right">Số NS / Quản lý?</th>
           </tr>
         </thead>
-        <tbody id="cnBody"></tbody>
+        <tbody id="qlInput"></tbody>
+      </table>
+    </div>
+
+    <div class="table-wrap" style="margin-top:12px">
+      <table>
+        <colgroup>
+          <col style="width:22%"><col style="width:16%"><col style="width:18%"><col style="width:18%"><col style="width:18%"><col style="width:18%">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Bộ phận</th>
+            <th class="right">Lương TB (tham chiếu)</th>
+            <th class="right">Quỹ hệ số khoán</th>
+            <th class="right">Quỹ trần 3P</th>
+            <th class="right">Quỹ lương khoán</th>
+            <th class="right">Lương TB (khoán)</th>
+          </tr>
+        </thead>
+        <tbody id="qlCalc"></tbody>
         <tfoot>
           <tr class="tot">
-            <td>Tổng (CN)</td><td></td><td></td>
-            <td class="right num" id="cnFund">0</td>
-            <td class="right num" id="cnPeople">0</td>
-            <td class="right num" id="cnFundTotal">0</td>
+            <td>Tổng (QL)</td>
+            <td></td>
+            <td class="right num" id="sumHSL">0</td>
+            <td class="right num" id="sum3P">0</td>
+            <td class="right num" id="sumQuota">0</td>
+            <td class="right num" id="qlAvg">0</td>
           </tr>
         </tfoot>
       </table>
-      <div class="small">* Hai dòng “Công nhân rung ép / mài hoàn thiện” tự cân = <b>100 − tổng % cùng nguồn − tổng % TX</b> (không âm).</div>
-      <div class="kpi" style="margin-top:10px">
-        <span class="badge">Lương TB CN RE: <span class="num" id="avgCNRE">0</span></span>
-        <span class="badge">Lương TB CN Mài: <span class="num" id="avgCNMAI">0</span></span>
-        <span class="badge">Lương TB CN TX: <span class="num" id="avgCNAll">0</span></span>
-      </div>
     </div>
-  </div>
-
-  <!-- KHỐI 2: QUẢN LÝ & KĨ SƯ -->
-  <div class="section"><div class="bar">Khối 2 – QUẢN LÝ & KĨ SƯ</div></div>
-  <div class="card">
-    <div class="body">
-      <div class="kpi">
-        <span class="badge">BSC (chung): 
-          <input id="defaultBSC" type="number" step="0.01" value="0.93" style="width:90px;margin-left:6px">
-        </span>
-        <span class="badge">Đơn giá: 
-          <input id="unit" type="number" step="1000" value="1000000" style="width:140px;margin-left:6px">
-        </span>
-        <span class="badge">Công định mức: 
-          <input id="std" type="number" step="0.1" value="22" style="width:90px;margin-left:6px">
-        </span>
-      </div>
-
-      <div class="table-wrap">
-        <table id="tblQL">
-          <colgroup>
-            <col style="width:22%"><col style="width:12%"><col style="width:12%"><col style="width:12%"><col style="width:12%"><col style="width:12%"><col style="width:8%"><col style="width:10%">
-          </colgroup>
-          <thead>
-            <tr>
-              <th>Bộ phận</th>
-              <th class="center">Nhóm tham chiếu</th>
-              <th class="right">KPI</th>
-              <th class="right">HSL</th>
-              <th class="right">Hệ số 3P</th>
-              <th class="right">Công</th>
-              <th class="right">Số NS</th>
-              <th class="right">Quản lý?</th>
-            </tr>
-          </thead>
-          <tbody id="qlInput"></tbody>
-        </table>
-      </div>
-
-      <div class="table-wrap" style="margin-top:12px">
-        <table>
-          <colgroup>
-            <col style="width:22%"><col style="width:19%"><col style="width:19%"><col style="width:19%"><col style="width:21%">
-          </colgroup>
-          <thead>
-            <tr>
-              <th>Bộ phận</th>
-              <th class="right">Quỹ hệ số khoán</th>
-              <th class="right">Quỹ trần 3P</th>
-              <th class="right">Quỹ lương khoán</th>
-              <th class="right">Lương TB</th>
-            </tr>
-          </thead>
-          <tbody id="qlCalc"></tbody>
-          <tfoot>
-            <tr class="tot">
-              <td>Tổng (QL)</td>
-              <td class="right num" id="sumHSL">0</td>
-              <td class="right num" id="sum3P">0</td>
-              <td class="right num" id="sumQuota">0</td>
-              <td class="right num" id="qlAvg">0</td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-      <div class="small">
-        Quỹ HSL theo **nhóm tham chiếu**: RE ⇒ dùng LươngTB CN RE; Mài ⇒ LươngTB CN Mài; TX ⇒ LươngTB CN Toàn xưởng.  
-        Quản lý (Trưởng/Phó đơn vị) dùng thưởng `0.7×BSC + 0.3×KPI`; các hàng còn lại dùng `0.7×KPI + 0.3×BSC`.  
-        Quỹ khoán = (HSL + 3P)/2.
-      </div>
+    <div class="small">
+      Quỹ hệ số khoán theo <b>nhóm tham chiếu</b>: RE ⇒ Lương TB CN RE; Mài ⇒ Lương TB CN Mài; TX ⇒ Lương TB CN Toàn xưởng.<br>
+      Quản lý (Trưởng/Phó) dùng thưởng <code>0.7×BSC + 0.3×KPI</code>; các hàng còn lại dùng <code>0.7×KPI + 0.3×BSC</code>.<br>
+      Quỹ khoán = (Quỹ hệ số khoán + Quỹ trần 3P) / 2.
     </div>
-  </div>
+  </div></div>
+
 </div>
 
 <script>
@@ -223,22 +186,23 @@ const toNum = v => (typeof v==='number')?v:(Number(String(v||'').replace(/[^\d.-
 const FUND_RE  = 1150988928;
 const FUND_MAI = 272956641;
 
-/* ===== Data ===== */
+/* ===== Data (mặc định) ===== */
 const CN_ROWS = [
   { name:'Công nhân thiết bị',        source:'TX', pct:2.7,  people:2.30, autoPercent:false },
   { name:'Cán bộ sản xuất',           source:'RE', pct:2.1,  people:0.92, autoPercent:false },
   { name:'Sửa đá',                    source:'RE', pct:3.7,  people:2.22, autoPercent:false },
   { name:'Trưởng ca hành chính',      source:'RE', pct:11.2, people:4.85, autoPercent:false },
-  { name:'Công nhân rung ép',         source:'RE', pct:80.0, people:48.53, autoPercent:true  },
-  { name:'Công nhân mài hoàn thiện',  source:'Mài', pct:100.0, people:18.79, autoPercent:true  },
+  { name:'Công nhân rung ép',         source:'RE', pct:80.30, people:48.53, autoPercent:true  },
+  { name:'Công nhân mài hoàn thiện',  source:'Mài', pct:97.30, people:18.79, autoPercent:true  },
 ];
 
 const QL_ROWS = [
-  { name:'Trưởng đơn vị',      groupRef:'TX', kpi:1.00, hsl:1.5, p3:1.8, days:22, people:1, manager:true },
-  { name:'Phó trưởng đơn vị',  groupRef:'TX', kpi:1.00, hsl:1.4, p3:1.7, days:22, people:1, manager:true },
-  { name:'Khối kỹ sư Mài',     groupRef:'Mài',kpi:1.02, hsl:1.2, p3:1.5, days:22, people:1, manager:false },
-  { name:'Khối kỹ sư Thiết bị',groupRef:'TX', kpi:0.98, hsl:1.3, p3:1.6, days:22, people:1, manager:false },
-  { name:'Khối kỹ sư Rung ép', groupRef:'RE', kpi:1.02, hsl:1.1, p3:1.4, days:22, people:5, manager:false },
+  // name, groupRef, kpi, hsl (hệ số lương), hsk (hệ số khoán), p3, days, people, manager
+  { name:'Trưởng đơn vị',      groupRef:'TX', kpi:1.00, hsl:50, hsk:4.0, p3:1.00, days:22, people:1, manager:true  },
+  { name:'Phó trưởng đơn vị',  groupRef:'TX', kpi:1.00, hsl:30, hsk:3.5, p3:1.00, days:22, people:1, manager:true  },
+  { name:'Khối kỹ sư Mài',     groupRef:'Mài',kpi:1.02, hsl:20, hsk:1.5, p3:1.00, days:22, people:1, manager:false },
+  { name:'Khối kỹ sư Thiết bị',groupRef:'TX', kpi:0.98, hsl:18, hsk:1.5, p3:1.00, days:22, people:1, manager:false },
+  { name:'Khối kỹ sư Rung ép', groupRef:'RE', kpi:1.02, hsl:100,hsk:1.5, p3:1.00, days:22, people:5, manager:false },
 ];
 
 /* ===== Render CN ===== */
@@ -261,7 +225,7 @@ function renderCN(){
       </td>
       <td class="right num" id="cn-base-${i}">0</td>
       <td class="right"><input type="number" step="0.01" data-idx="${i}" data-k="people" value="${r.people}"></td>
-      <td class="right num" id="cn-total-${i}">0</td>
+      <td class="right num" id="cn-avg-${i}">0</td>
     `;
     cnBody.appendChild(tr);
   });
@@ -292,10 +256,13 @@ function renderQLInput(){
       </td>
       <td class="right"><input type="number" step="0.01" data-i="${i}" data-k="kpi" value="${r.kpi}"></td>
       <td class="right"><input type="number" step="0.01" data-i="${i}" data-k="hsl" value="${r.hsl}"></td>
+      <td class="right"><input type="number" step="0.01" data-i="${i}" data-k="hsk" value="${r.hsk}"></td>
       <td class="right"><input type="number" step="0.01" data-i="${i}" data-k="p3"  value="${r.p3}"></td>
       <td class="right"><input type="number" step="0.01" data-i="${i}" data-k="days" value="${r.days}"></td>
-      <td class="right"><input type="number" step="0.01" data-i="${i}" data-k="people" value="${r.people}"></td>
-      <td class="right"><input type="checkbox" data-i="${i}" data-k="manager" ${r.manager?'checked':''}></td>
+      <td class="right">
+        <input type="number" step="0.01" data-i="${i}" data-k="people" value="${r.people}" style="width:60%">
+        <input type="checkbox" data-i="${i}" data-k="manager" ${r.manager?'checked':''} style="margin-left:8px;vertical-align:middle">
+      </td>
     `;
     qlInputTbody.appendChild(tr);
   });
@@ -312,34 +279,49 @@ function renderQLInput(){
 /* ===== QL calc tbody ===== */
 const qlCalcTbody=document.getElementById('qlCalc');
 
+/* ===== Alert helper (chống spam) ===== */
+let alertedRE=false, alertedMAI=false;
+function resetAlerts(){alertedRE=false; alertedMAI=false;}
+
 /* ===== Compute ===== */
 function computeAll(){
-  // --- CN: tự cân phần trăm ---
-  // Tổng % TX (ảnh hưởng cả RE và Mài)
+  /* --- CN: tự cân phần trăm --- */
   const sumTX = CN_ROWS.filter(r=>r.source==='TX').reduce((s,r)=>s+toNum(r.pct),0);
-
-  // Hàm cân theo nguồn
   const rebalance = (src)=>{
     const auto = CN_ROWS.filter(r=>r.source===src && r.autoPercent);
-    if(!auto.length) return;
     const manual = CN_ROWS.filter(r=>r.source===src && !r.autoPercent);
     const sumManual = manual.reduce((s,r)=>s+toNum(r.pct),0);
-    const remain = Math.max(0, 100 - sumManual - sumTX);
-    const per = remain/auto.length;
-    auto.forEach(r=>r.pct=per);
+    const remain = 100 - sumManual - sumTX;
+
+    // cảnh báo nếu âm
+    const over = remain < 0;
+    manual.forEach(r=>{
+      const el = cnBody.querySelector(`input[data-idx="${CN_ROWS.indexOf(r)}"][data-k="pct"]`);
+      if(el) el.classList.toggle('input-error', over);
+    });
+    if(over){
+      if(src==='RE' && !alertedRE){ alert('Tổng % nguồn RE vượt 100% (đã tính cả TX).'); alertedRE=true; }
+      if(src==='Mài'&& !alertedMAI){ alert('Tổng % nguồn Mài vượt 100% (đã tính cả TX).'); alertedMAI=true; }
+    }
+
+    if(auto.length){
+      const per = Math.max(0, remain)/auto.length;
+      auto.forEach(r=>r.pct=per);
+    }
   };
+  resetAlerts();
   rebalance('RE');
   rebalance('Mài');
 
-  // cập nhật ô input % auto
+  // cập nhật input % tự động
   CN_ROWS.forEach((r,i)=>{
     if(r.autoPercent){
       const inp=cnBody.querySelector(`input[data-idx="${i}"][data-k="pct"]`);
-      if(inp) inp.value=r.pct.toFixed(2);
+      if(inp) inp.value=Number(r.pct).toFixed(2);
     }
   });
 
-  // --- CN: tính quỹ/people/Average ---
+  /* --- CN: tính quỹ/people/Average --- */
   let sumFundCN=0,sumPeopleCN=0;
   let fundRE_CN=0,peopleRE_CN=0;
   let fundMAI_CN=0,peopleMAI_CN=0;
@@ -352,14 +334,15 @@ function computeAll(){
     if(r.source==='TX')  fundPart = (FUND_RE + FUND_MAI) * pct;
 
     document.getElementById(`cn-base-${i}`).textContent = fmt(Math.round(fundPart));
-    document.getElementById(`cn-total-${i}`).textContent= fmt(Math.round(fundPart));
+    const ppl = toNum(r.people);
+    const rowAvg = ppl>0 ? fundPart/ppl : 0;
+    document.getElementById(`cn-avg-${i}`).textContent  = fmt(Math.round(rowAvg));
 
     sumFundCN   += fundPart;
-    sumPeopleCN += toNum(r.people);
+    sumPeopleCN += ppl;
 
-    if(r.source==='RE'){  fundRE_CN  += fundPart; peopleRE_CN  += toNum(r.people); }
-    if(r.source==='Mài'){ fundMAI_CN += fundPart; peopleMAI_CN += toNum(r.people); }
-    // TX chỉ đóng góp vào "toàn xưởng", không đẩy vào RE/Mài
+    if(r.source==='RE'){  fundRE_CN  += fundPart; peopleRE_CN  += ppl; }
+    if(r.source==='Mài'){ fundMAI_CN += fundPart; peopleMAI_CN += ppl; }
   });
 
   const avgCN_RE  = peopleRE_CN>0 ? fundRE_CN/peopleRE_CN : 0;
@@ -368,12 +351,12 @@ function computeAll(){
 
   document.getElementById('cnFund').textContent      = fmt(Math.round(sumFundCN));
   document.getElementById('cnPeople').textContent    = fmt(sumPeopleCN.toFixed(2));
-  document.getElementById('cnFundTotal').textContent = fmt(Math.round(sumFundCN));
+  document.getElementById('cnAvgAll').textContent    = fmt(Math.round(avgCN_ALL));
   document.getElementById('avgCNRE').textContent     = fmt(Math.round(avgCN_RE));
   document.getElementById('avgCNMAI').textContent    = fmt(Math.round(avgCN_MAI));
   document.getElementById('avgCNAll').textContent    = fmt(Math.round(avgCN_ALL));
 
-  // --- QL: HSL + 3P + Khoán ---
+  /* --- QL: Khoán --- */
   qlCalcTbody.innerHTML='';
   let sumHSL=0,sum3P=0,sumQuota=0,sumPeopleQL=0;
 
@@ -386,13 +369,17 @@ function computeAll(){
     const ratioDay = (toNum(r.days)||0)/std;
     const people   = toNum(r.people)||0;
 
-    const fundHSL = (toNum(r.hsl)||0) * ref * ratioDay * people;
+    // Quỹ hệ số khoán
+    const fundHSL = (toNum(r.hsk)||0) * ref * ratioDay * people;
 
+    // Thưởng 3P
     const kpi = toNum(r.kpi)||1;
     const reward = r.manager ? (0.7*BSC + 0.3*kpi) : (0.7*kpi + 0.3*BSC);
 
+    // Quỹ trần 3P
     const fund3P = (toNum(r.hsl)||0) * unit * (toNum(r.p3)||0) * ratioDay * reward * people;
 
+    // Khoán & TB
     const quota = (fundHSL + fund3P)/2;
     const avg   = people>0 ? quota/people : 0;
 
@@ -401,6 +388,7 @@ function computeAll(){
     const tr=document.createElement('tr');
     tr.innerHTML=`
       <td>${r.name}</td>
+      <td class="right num">${fmt(Math.round(ref))}</td>
       <td class="right num">${fmt(Math.round(fundHSL))}</td>
       <td class="right num">${fmt(Math.round(fund3P))}</td>
       <td class="right num">${fmt(Math.round(quota))}</td>
@@ -424,8 +412,8 @@ function computeAll(){
 }
 
 /* ===== Init ===== */
-document.getElementById('fundRE').textContent=fmt(FUND_RE);
-document.getElementById('fundMAI').textContent=fmt(FUND_MAI);
+document.getElementById('fundRE').textContent = fmt(FUND_RE);
+document.getElementById('fundMAI').textContent= fmt(FUND_MAI);
 renderCN();
 renderQLInput();
 ['unit','std','defaultBSC'].forEach(id=>document.getElementById(id).addEventListener('input',computeAll));
