@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hệ thống phân bổ lương • Hoàn chỉnh</title>
+<title>Hệ thống phân bổ lương • Corrected</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -80,17 +80,6 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
 /* fixed data styling */
 .fixed-data{background:#f8f9fa;color:var(--muted);font-style:italic}
 
-/* Enhanced summary display for F section */
-.fund-before-adjust{
-  display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:20px 0;
-}
-.fund-card{
-  background:linear-gradient(135deg, #f8faff 0%, #e0e9ff 100%);
-  border:2px solid var(--blue);border-radius:12px;padding:20px;text-align:center;
-}
-.fund-title{font-size:16px;font-weight:700;color:var(--blue-600);margin-bottom:8px}
-.fund-amount{font-size:32px;font-weight:800;color:var(--blue);margin-bottom:4px}
-
 /* Final highlight row */
 .final-highlight{background:linear-gradient(135deg, #f0f7ff 0%, #e6f3ff 100%);border:2px solid var(--blue)!important;font-weight:800;color:var(--blue-600)}
 
@@ -99,6 +88,10 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
 .breakdown-table th{background:var(--blue);color:#fff;font-weight:800}
 .breakdown-table .positive{color:var(--blue);font-weight:700}
 .breakdown-table .negative{color:var(--red);font-weight:700}
+
+/* Pre-adjustment summary style */
+.pre-adjust-table th{background:var(--orange);color:#fff;font-weight:800}
+.pre-adjust-total{background:#fff5eb;border:2px solid var(--orange);font-weight:800;color:#ea580c}
 </style>
 </head>
 <body>
@@ -350,55 +343,9 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
     </div>
   </div></div>
 
-  <!-- ===== F. ĐIỀU CHỈNH QUỸ LƯƠNG ===== -->
-  <div class="section"><div class="bar">F. Điều chỉnh quỹ lương</div></div>
-  <div class="card"><div class="body">
-    <!-- Quỹ lương khoán trước điều chỉnh -->
-    <h3 style="margin:0 0 16px 0;text-align:center;color:var(--blue-600)">Quỹ lương khoán trước điều chỉnh</h3>
-    <div class="fund-before-adjust">
-      <div class="fund-card">
-        <div class="fund-title">Rung ép</div>
-        <div class="fund-amount">1,154,488,928 đ</div>
-      </div>
-      <div class="fund-card">
-        <div class="fund-title">Mài</div>
-        <div class="fund-amount">272,956,641 đ</div>
-      </div>
-    </div>
-
-    <!-- Bảng điều chỉnh -->
-    <h3 style="margin:20px 0 12px 0;color:var(--blue-600)">Điều chỉnh quỹ lương</h3>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Nội dung</th>
-            <th class="right">Quỹ lương RE</th>
-            <th class="right">Quỹ lương Mài</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Quỹ lương còn dư tháng trước gửi lại</td><td class="right">0</td><td class="right">0</td></tr>
-          <tr><td>Quỹ lương gửi lại cho các tháng sau</td><td class="right">0</td><td class="right red">(2,500,000)</td></tr>
-          <tr><td>Quỹ lương trả nợ công ty</td><td class="right">0</td><td class="right">0</td></tr>
-          <tr><td>Vay lương công ty</td><td class="right">0</td><td class="right">0</td></tr>
-          <tr class="tot"><td><strong>Quỹ lương sau điều chỉnh</strong></td><td class="right blue"><strong>1,154,488,928</strong></td><td class="right blue"><strong>272,956,641</strong></td></tr>
-          <tr><td>Quỹ lương khuyến khích sản xuất</td><td class="right">1,500,000</td><td class="right">0</td></tr>
-          <tr class="final-highlight"><td><strong>Quỹ lương còn lại</strong></td><td class="right"><strong>1,150,988,928</strong></td><td class="right"><strong>272,956,641</strong></td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div></div>
-
-  <!-- ===== TỔNG QUỸ LƯƠNG CÒN LẠI (HERO SECTION) ===== -->
-  <div class="hero-section">
-    <div class="hero-subtitle">TỔNG QUỸ LƯƠNG CÒN LẠI</div>
-    <div class="hero-number">1,423,945,569 đ</div>
-    <div class="hero-subtitle">Sẵn sàng phân bổ cho các bộ phận</div>
-  </div>
-
-  <!-- ===== BẢNG TỔNG HỢP CÁC KHOẢN ===== -->
-  <div class="card"><div class="body breakdown-table">
+  <!-- ===== BẢNG TỔNG HỢP TRƯỚC ĐIỀU CHỈNH (A→E) ===== -->
+  <div class="section"><div class="bar">Tổng hợp trước điều chỉnh (A→E)</div></div>
+  <div class="card"><div class="body pre-adjust-table">
     <div class="table-wrap">
       <table>
         <thead>
@@ -414,13 +361,43 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
           <tr><td>Vệ sinh & Bảo dưỡng (C)</td><td class="right negative">(15,347,218)</td><td class="right negative">(15,347,218)</td></tr>
           <tr><td>Chi phí sản xuất (D)</td><td class="right negative">(16,717,890.54)</td><td class="right negative">(12,176,355.83)</td></tr>
           <tr><td>Chi phí phát sinh (E)</td><td class="right positive">253,800,000</td><td class="right positive">21,600,000</td></tr>
-          <tr><td>Điều chỉnh (F)</td><td class="right">0</td><td class="right negative">(2,500,000)</td></tr>
-          <tr><td>Khuyến khích sản xuất</td><td class="right negative">(1,500,000)</td><td class="right">0</td></tr>
-          <tr class="tot"><td><strong>Tổng quỹ lương cuối cùng</strong></td><td class="right positive"><strong>1,150,988,928</strong></td><td class="right positive"><strong>272,956,641</strong></td></tr>
+          <tr class="pre-adjust-total"><td><strong>Quỹ lương trước điều chỉnh</strong></td><td class="right"><strong>1,121,553,085.98</strong></td><td class="right"><strong>243,534,548.17</strong></td></tr>
         </tbody>
       </table>
     </div>
   </div></div>
+
+  <!-- ===== F. ĐIỀU CHỈNH QUỸ LƯƠNG ===== -->
+  <div class="section"><div class="bar">F. Điều chỉnh quỹ lương</div></div>
+  <div class="card"><div class="body">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nội dung</th>
+            <th class="right">Quỹ lương RE</th>
+            <th class="right">Quỹ lương Mài</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Quỹ lương còn dư tháng trước gửi lại</td><td class="right">0</td><td class="right">0</td></tr>
+          <tr><td>Quỹ lương gửi lại cho các tháng sau</td><td class="right">0</td><td class="right red">(2,500,000)</td></tr>
+          <tr><td>Quỹ lương trả nợ công ty</td><td class="right">0</td><td class="right">0</td></tr>
+          <tr><td>Vay lương công ty</td><td class="right">0</td><td class="right">0</td></tr>
+          <tr class="tot"><td><strong>Quỹ lương sau điều chỉnh</strong></td><td class="right blue"><strong>1,121,553,085.98</strong></td><td class="right blue"><strong>241,034,548.17</strong></td></tr>
+          <tr><td>Quỹ lương khuyến khích sản xuất</td><td class="right">1,500,000</td><td class="right">0</td></tr>
+          <tr class="final-highlight"><td><strong>Quỹ lương còn lại</strong></td><td class="right"><strong>1,150,988,928</strong></td><td class="right"><strong>272,956,641</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div></div>
+
+  <!-- ===== TỔNG QUỸ LƯƠNG CÒN LẠI (HERO SECTION) ===== -->
+  <div class="hero-section">
+    <div class="hero-subtitle">TỔNG QUỸ LƯƠNG CÒN LẠI</div>
+    <div class="hero-number">1,423,945,569 đ</div>
+    <div class="hero-subtitle">Sẵn sàng phân bổ cho các bộ phận</div>
+  </div>
 
   <!-- ===== PHẦN PHÂN BỔ CHI TIẾT ===== -->
   
