@@ -102,9 +102,9 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
         </tr>
       </tfoot>
     </table>
-    <div class="small">* Hai dòng “Công nhân rung ép / mài hoàn thiện” tự cân = <b>100 − tổng % cùng nguồn − tổng % TX</b> (không âm). Có cảnh báo nếu vượt 100.</div>
+    <div class="small">* Hai dòng "Công nhân rung ép / mài hoàn thiện" tự cân = <b>100 − tổng % cùng nguồn − tổng % TX</b> (không âm). Có cảnh báo nếu vượt 100.</div>
     <div class="kpi" style="margin-top:10px">
-      <span class="badge">Lương TB CN RE: <span class="num" id="avgCNRE">0</span></span>
+      <span class="badge">Lương TB CN Rung ép: <span class="num" id="avgCNRungEp">0</span></span>
       <span class="badge">Lương TB CN Mài: <span class="num" id="avgCNMAI">0</span></span>
       <span class="badge">Lương TB CN TX: <span class="num" id="avgCNAll">0</span></span>
     </div>
@@ -169,7 +169,7 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
       </table>
     </div>
     <div class="small">
-      Quỹ hệ số khoán theo <b>nhóm tham chiếu</b>: RE ⇒ Lương TB CN RE; Mài ⇒ Lương TB CN Mài; TX ⇒ Lương TB CN Toàn xưởng.<br>
+      Quỹ hệ số khoán theo <b>nhóm tham chiếu</b>: RE ⇒ Lương TB CN Rung ép; Mài ⇒ Lương TB CN Mài; TX ⇒ Lương TB CN Toàn xưởng.<br>
       Quản lý (Trưởng/Phó) dùng thưởng <code>0.7×BSC + 0.3×KPI</code>; các hàng còn lại dùng <code>0.7×KPI + 0.3×BSC</code>.<br>
       Quỹ khoán = (Quỹ hệ số khoán + Quỹ trần 3P) / 2.
     </div>
@@ -321,10 +321,9 @@ function computeAll(){
     }
   });
 
-  /* --- CN: tính quỹ/people/Average --- */
+  /* --- CN: tính quỹ/people/Average và lưu giá trị cụ thể từng dòng --- */
   let sumFundCN=0,sumPeopleCN=0;
-  let fundRE_CN=0,peopleRE_CN=0;
-  let fundMAI_CN=0,peopleMAI_CN=0;
+  let avgRungEp = 0, avgMai = 0; // Lương TB của dòng cụ thể
 
   CN_ROWS.forEach((r,i)=>{
     const pct = toNum(r.pct)/100;
@@ -341,19 +340,22 @@ function computeAll(){
     sumFundCN   += fundPart;
     sumPeopleCN += ppl;
 
-    if(r.source==='RE'){  fundRE_CN  += fundPart; peopleRE_CN  += ppl; }
-    if(r.source==='Mài'){ fundMAI_CN += fundPart; peopleMAI_CN += ppl; }
+    // Lưu lương TB của từng dòng cụ thể
+    if(r.name === 'Công nhân rung ép') {
+      avgRungEp = rowAvg;
+    }
+    if(r.name === 'Công nhân mài hoàn thiện') {
+      avgMai = rowAvg;
+    }
   });
 
-  const avgCN_RE  = peopleRE_CN>0 ? fundRE_CN/peopleRE_CN : 0;
-  const avgCN_MAI = peopleMAI_CN>0 ? fundMAI_CN/peopleMAI_CN : 0;
   const avgCN_ALL = sumPeopleCN>0 ? sumFundCN/sumPeopleCN : 0;
 
   document.getElementById('cnFund').textContent      = fmt(Math.round(sumFundCN));
   document.getElementById('cnPeople').textContent    = fmt(sumPeopleCN.toFixed(2));
   document.getElementById('cnAvgAll').textContent    = fmt(Math.round(avgCN_ALL));
-  document.getElementById('avgCNRE').textContent     = fmt(Math.round(avgCN_RE));
-  document.getElementById('avgCNMAI').textContent    = fmt(Math.round(avgCN_MAI));
+  document.getElementById('avgCNRungEp').textContent = fmt(Math.round(avgRungEp)); // Chỉ lương của dòng "Công nhân rung ép"
+  document.getElementById('avgCNMAI').textContent    = fmt(Math.round(avgMai)); // Chỉ lương của dòng "Công nhân mài hoàn thiện"
   document.getElementById('avgCNAll').textContent    = fmt(Math.round(avgCN_ALL));
 
   /* --- QL: Khoán --- */
@@ -365,7 +367,8 @@ function computeAll(){
   const BSC  = toNum(document.getElementById('defaultBSC').value)||0.93;
 
   QL_ROWS.forEach(r=>{
-    const ref = (r.groupRef==='RE') ? avgCN_RE : (r.groupRef==='Mài') ? avgCN_MAI : avgCN_ALL;
+    // Sửa tham chiếu: RE dùng lương TB của dòng "Công nhân rung ép", Mài dùng dòng "Công nhân mài hoàn thiện"
+    const ref = (r.groupRef==='RE') ? avgRungEp : (r.groupRef==='Mài') ? avgMai : avgCN_ALL;
     const ratioDay = (toNum(r.days)||0)/std;
     const people   = toNum(r.people)||0;
 
