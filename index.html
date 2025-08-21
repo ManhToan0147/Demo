@@ -3,13 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Phân bổ chi tiết • CN & QL-KS</title>
+<title>Hệ thống phân bổ lương • Hoàn chỉnh</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --blue:#1E63F3; --blue-600:#0F55CC; --blue-50:#F5F8FF;
   --bg:#F6F8FC; --card:#fff; --text:#0F172A; --muted:#5B6477; --line:#E6EAF2;
-  --green:#14B86E; --red:#E54848; --shadow:0 6px 22px rgba(20,105,255,.06),0 2px 8px rgba(20,105,255,.05);
+  --green:#14B86E; --red:#E54848; --orange:#F59E0B; --purple:#8B5CF6;
+  --shadow:0 6px 22px rgba(20,105,255,.06),0 2px 8px rgba(20,105,255,.05);
   --radius:14px;
 }
 *{box-sizing:border-box}
@@ -19,6 +20,15 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:"Inter",system-
 .bar{background:var(--blue);color:#fff;padding:12px 16px;border-radius:10px;font-weight:800;box-shadow:var(--shadow)}
 .card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:var(--radius);margin-top:12px}
 .card .body{padding:14px 16px 18px 16px}
+
+/* Hero section for final total */
+.hero-section{
+  background:linear-gradient(135deg, var(--blue) 0%, var(--purple) 100%);
+  color:#fff;text-align:center;padding:40px 20px;border-radius:var(--radius);
+  margin:20px 0;box-shadow:var(--shadow);
+}
+.hero-number{font-size:48px;font-weight:800;margin-bottom:8px;text-shadow:0 2px 4px rgba(0,0,0,0.2)}
+.hero-subtitle{font-size:18px;opacity:0.9;font-weight:600}
 
 /* table */
 .table-wrap{overflow-x:auto}
@@ -48,18 +58,375 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
 
 /* highlight lỗi */
 .input-error{border-color:var(--red)!important;background:#fff4f4!important}
+
+/* two columns layout */
+.two-cols{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:12px}
+@media (max-width: 768px){.two-cols{grid-template-columns:1fr}}
+
+/* summary boxes */
+.summary-box{background:#f8faff;border:1px solid #e0e9ff;border-radius:12px;padding:16px;text-align:center}
+.summary-number{font-size:28px;font-weight:800;color:var(--blue);margin-bottom:4px}
+.summary-label{font-size:14px;color:var(--muted)}
+
+/* percentage display */
+.percent-display{display:flex;justify-content:space-around;margin:16px 0}
+.percent-item{text-align:center}
+.percent-value{font-size:32px;font-weight:800;margin-bottom:4px}
+.percent-label{font-size:12px;color:var(--muted)}
+.blue{color:var(--blue)}
+.red{color:var(--red)}
+.green{color:var(--green)}
+
+/* fixed data styling */
+.fixed-data{background:#f8f9fa;color:var(--muted);font-style:italic}
+
+/* Enhanced summary display for F section */
+.fund-before-adjust{
+  display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:20px 0;
+}
+.fund-card{
+  background:linear-gradient(135deg, #f8faff 0%, #e0e9ff 100%);
+  border:2px solid var(--blue);border-radius:12px;padding:20px;text-align:center;
+}
+.fund-title{font-size:16px;font-weight:700;color:var(--blue-600);margin-bottom:8px}
+.fund-amount{font-size:32px;font-weight:800;color:var(--blue);margin-bottom:4px}
+
+/* Final highlight row */
+.final-highlight{background:linear-gradient(135deg, #f0f7ff 0%, #e6f3ff 100%);border:2px solid var(--blue)!important;font-weight:800;color:var(--blue-600)}
+
+/* Summary breakdown table style */
+.breakdown-table{margin-top:20px}
+.breakdown-table th{background:var(--blue);color:#fff;font-weight:800}
+.breakdown-table .positive{color:var(--blue);font-weight:700}
+.breakdown-table .negative{color:var(--red);font-weight:700}
 </style>
 </head>
 <body>
 <div class="container">
 
-  <!-- Tổng hợp -->
-  <div class="section"><div class="bar">Tổng hợp</div></div>
+  <!-- ===== A. SẢN LƯỢNG ===== -->
+  <div class="section"><div class="bar">A. Sản lượng</div></div>
   <div class="card"><div class="body">
-    <div class="kpi">
-      <span class="badge">Quỹ RE còn lại: <span id="fundRE" class="num">1,150,988,928</span></span>
-      <span class="badge">Quỹ Mài còn lại: <span id="fundMAI" class="num">272,956,641</span></span>
+    <div class="two-cols">
+      <!-- Rung ép -->
+      <div>
+        <h3 style="margin:0 0 16px 0">Sản lượng Rung ép</h3>
+        <div class="two-cols" style="gap:12px">
+          <div class="summary-box">
+            <div class="summary-number">14,694.44</div>
+            <div class="summary-label">Tổng sản lượng (m2)</div>
+          </div>
+          <div class="summary-box">
+            <div class="summary-number blue">936,627,600</div>
+            <div class="summary-label">Tổng thành tiền (đ)</div>
+          </div>
+        </div>
+        
+        <div class="table-wrap" style="margin-top:16px">
+          <table>
+            <thead>
+              <tr>
+                <th>Nhóm sản phẩm</th>
+                <th class="right">Sản lượng(m2)</th>
+                <th class="right">Đơn giá</th>
+                <th class="right">Thành tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="fixed-data"><td>Nhóm sản phẩm</td><td class="right">Sản lượng(m2)</td><td class="right">Đơn giá</td><td class="right">Thành tiền</td></tr>
+              <tr class="fixed-data"><td>Nhóm sản phẩm</td><td class="right">Sản lượng(m2)</td><td class="right">Đơn giá</td><td class="right">Thành tiền</td></tr>
+              <tr class="fixed-data"><td>Nhóm sản phẩm</td><td class="right">Sản lượng(m2)</td><td class="right">Đơn giá</td><td class="right">Thành tiền</td></tr>
+              <tr class="fixed-data"><td>Nhóm sản phẩm</td><td class="right">Sản lượng(m2)</td><td class="right">Đơn giá</td><td class="right">Thành tiền</td></tr>
+              <tr class="fixed-data"><td>Nhóm sản phẩm</td><td class="right">Sản lượng(m2)</td><td class="right">Đơn giá</td><td class="right">Thành tiền</td></tr>
+              <tr class="fixed-data"><td>Nhóm sản phẩm</td><td class="right">Sản lượng(m2)</td><td class="right">Đơn giá</td><td class="right">Thành tiền</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Mài -->
+      <div>
+        <h3 style="margin:0 0 16px 0">Sản lượng Mài</h3>
+        <div class="two-cols" style="gap:12px">
+          <div class="summary-box">
+            <div class="summary-number">28,585.60</div>
+            <div class="summary-label">Tổng sản lượng (m2)</div>
+          </div>
+          <div class="summary-box">
+            <div class="summary-number blue">249,458,122</div>
+            <div class="summary-label">Tổng thành tiền (đ)</div>
+          </div>
+        </div>
+        
+        <div class="table-wrap" style="margin-top:16px">
+          <table>
+            <thead>
+              <tr>
+                <th>Nhóm sản phẩm</th>
+                <th class="right">Sản lượng(m2)</th>
+                <th class="right">Đơn giá</th>
+                <th class="right">Thành tiền</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="fixed-data"><td>Nhóm sản phẩm</td><td class="right">Sản lượng(m2)</td><td class="right">Đơn giá</td><td class="right">Thành tiền</td></tr>
+              <tr class="fixed-data"><td>Nhóm sản phẩm</td><td class="right">Sản lượng(m2)</td><td class="right">Đơn giá</td><td class="right">Thành tiền</td></tr>
+              <tr class="fixed-data"><td>Nhóm sản phẩm</td><td class="right">Sản lượng(m2)</td><td class="right">Đơn giá</td><td class="right">Thành tiền</td></tr>
+              <tr class="fixed-data"><td>Nhóm sản phẩm</td><td class="right">Sản lượng(m2)</td><td class="right">Đơn giá</td><td class="right">Thành tiền</td></tr>
+              <tr class="fixed-data"><td>Nhóm sản phẩm</td><td class="right">Sản lượng(m2)</td><td class="right">Đơn giá</td><td class="right">Thành tiền</td></tr>
+              <tr class="fixed-data"><td>Nhóm sản phẩm</td><td class="right">Sản lượng(m2)</td><td class="right">Đơn giá</td><td class="right">Thành tiền</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
+  </div></div>
+
+  <!-- ===== B. CHẤT LƯỢNG RUNG ÉP ===== -->
+  <div class="section"><div class="bar">B. Chất lượng Rung ép</div></div>
+  <div class="card"><div class="body">
+    <div class="percent-display">
+      <div class="percent-item">
+        <div class="percent-value blue">50.8%</div>
+        <div class="percent-label">Tỉ lệ A1 ban đầu</div>
+      </div>
+      <div class="percent-item">
+        <div class="percent-value blue">94.1%</div>
+        <div class="percent-label">Tỉ lệ A1 cuối cùng</div>
+      </div>
+      <div class="percent-item">
+        <div class="percent-value red">0.04%</div>
+        <div class="percent-label">Tỉ lệ C (Không đạt)</div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nội dung</th>
+            <th class="right">Số lượng (m2)</th>
+            <th class="right">Thành tiền</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Thưởng chỉ tiêu A1 ban đầu</td><td class="right">0</td><td class="right green">0</td></tr>
+          <tr><td>Phạt chỉ tiêu A1 ban đầu</td><td class="right">4,453.8</td><td class="right red">(65,127,993.73)</td></tr>
+          <tr><td>Thưởng chỉ tiêu A1 cuối cùng</td><td class="right">0</td><td class="right green">0</td></tr>
+          <tr><td>Phạt chỉ tiêu A1 cuối cùng</td><td class="right">651.7</td><td class="right red">(29,327,106.375)</td></tr>
+          <tr><td>Phạt chỉ tiêu C vượt quá định mức</td><td class="right">2.4</td><td class="right red">- 609,445</td></tr>
+          <tr><td>Khấu trừ sản lượng B + C</td><td class="right">872.1</td><td class="right green">58,225,140</td></tr>
+          <tr class="tot"><td><strong>Tổng tiền vào quỹ lương Rung ép</strong></td><td class="right"></td><td class="right red"><strong>(36,809,405.48)</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div></div>
+
+  <!-- ===== C. VỆ SINH & BẢO DƯỠNG ===== -->
+  <div class="section"><div class="bar">C. Vệ sinh & Bảo dưỡng</div></div>
+  <div class="card"><div class="body">
+    <div class="two-cols">
+      <!-- Rung ép -->
+      <div>
+        <h3 style="margin:0 0 16px 0">Rung ép</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nội dung</th>
+                <th class="right">Điểm thực tế</th>
+                <th class="right">Thưởng/ Phạt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Bảo dưỡng thiết bị</td><td class="right">97.8</td><td class="right red">(7,347,218)</td></tr>
+              <tr><td>Vệ sinh 5S</td><td class="right">86</td><td class="right red">(8,000,000)</td></tr>
+              <tr class="tot"><td><strong>Tổng cộng</strong></td><td class="right"></td><td class="right red"><strong>(15,347,218)</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Mài -->
+      <div>
+        <h3 style="margin:0 0 16px 0">Mài</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nội dung</th>
+                <th class="right">Điểm thực tế</th>
+                <th class="right">Thưởng/ Phạt</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Bảo dưỡng thiết bị</td><td class="right">97.8</td><td class="right red">(4,287,836)</td></tr>
+              <tr><td>Vệ sinh 5S</td><td class="right">86</td><td class="right red">(8,000,000)</td></tr>
+              <tr class="tot"><td><strong>Tổng cộng</strong></td><td class="right"></td><td class="right red"><strong>(15,347,218)</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- ===== D. CHI PHÍ SẢN XUẤT ===== -->
+  <div class="section"><div class="bar">D. Chi phí sản xuất</div></div>
+  <div class="card"><div class="body">
+    <div class="two-cols">
+      <!-- Rung ép -->
+      <div class="summary-box">
+        <h3 style="margin:0 0 8px 0">Rung ép</h3>
+        <div class="summary-number blue">16,717,890.54 đ</div>
+      </div>
+
+      <!-- Mài -->
+      <div class="summary-box">
+        <h3 style="margin:0 0 8px 0">Mài</h3>
+        <div class="summary-number blue">12,176,355.83 đ</div>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="margin-top:20px">
+      <table>
+        <thead>
+          <tr>
+            <th>Tên tài nguyên</th>
+            <th class="center">Phân bổ</th>
+            <th class="center">Mức chênh lệch giá trị khoán</th>
+            <th class="center">Đơn vị</th>
+            <th class="right">Giá trị thưởng phạt</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="fixed-data"><td>Tên tài nguyên</td><td class="center">Phân bổ</td><td class="center">Mức chênh lệch giá trị khoán</td><td class="center">Đơn vị</td><td class="right">Giá trị thưởng phạt</td></tr>
+          <tr class="fixed-data"><td>Tên tài nguyên</td><td class="center">Phân bổ</td><td class="center">Mức chênh lệch giá trị khoán</td><td class="center">Đơn vị</td><td class="right">Giá trị thưởng phạt</td></tr>
+          <tr class="fixed-data"><td>Tên tài nguyên</td><td class="center">Phân bổ</td><td class="center">Mức chênh lệch giá trị khoán</td><td class="center">Đơn vị</td><td class="right">Giá trị thưởng phạt</td></tr>
+          <tr class="fixed-data"><td>Tên tài nguyên</td><td class="center">Phân bổ</td><td class="center">Mức chênh lệch giá trị khoán</td><td class="center">Đơn vị</td><td class="right">Giá trị thưởng phạt</td></tr>
+          <tr class="fixed-data"><td>Tên tài nguyên</td><td class="center">Phân bổ</td><td class="center">Mức chênh lệch giá trị khoán</td><td class="center">Đơn vị</td><td class="right">Giá trị thưởng phạt</td></tr>
+          <tr class="fixed-data"><td>Tên tài nguyên</td><td class="center">Phân bổ</td><td class="center">Mức chênh lệch giá trị khoán</td><td class="center">Đơn vị</td><td class="right">Giá trị thưởng phạt</td></tr>
+          <tr class="fixed-data"><td>Tên tài nguyên</td><td class="center">Phân bổ</td><td class="center">Mức chênh lệch giá trị khoán</td><td class="center">Đơn vị</td><td class="right">Giá trị thưởng phạt</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div></div>
+
+  <!-- ===== E. CHI PHÍ PHÁT SINH ===== -->
+  <div class="section"><div class="bar">E. Chi phí phát sinh</div></div>
+  <div class="card"><div class="body">
+    <div class="two-cols">
+      <!-- Rung ép -->
+      <div class="summary-box">
+        <h3 style="margin:0 0 8px 0">Rung ép</h3>
+        <div class="summary-number blue">253,800,000 đ</div>
+      </div>
+
+      <!-- Mài -->
+      <div class="summary-box">
+        <h3 style="margin:0 0 8px 0">Mài</h3>
+        <div class="summary-number blue">21,600,000 đ</div>
+      </div>
+    </div>
+
+    <div class="table-wrap" style="margin-top:20px">
+      <table>
+        <thead>
+          <tr>
+            <th>Chi phí phát sinh</th>
+            <th class="right">Quỹ lương RE</th>
+            <th class="right">Quỹ lương Mài</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Thưởng phạt số sản phẩm cháy trong tháng</td><td class="right">0</td><td class="right">0</td></tr>
+          <tr><td>Tiền cháy máu</td><td class="right">45,000,000</td><td class="right">0</td></tr>
+          <tr><td>HC dụng theo KH</td><td class="right">212,400,000</td><td class="right">21,600,000</td></tr>
+          <tr><td>RE nhận hỗ trợ từ SSC + NM2</td><td class="right red">(3,600,000)</td><td class="right">0</td></tr>
+          <tr><td>Hỗ trợ PKTH</td><td class="right">0</td><td class="right">0</td></tr>
+          <tr><td>Hỗ trợ Dược</td><td class="right">0</td><td class="right">0</td></tr>
+          <tr><td>Bộ phận Mài nhận hỗ trợ</td><td class="right">0</td><td class="right">0</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div></div>
+
+  <!-- ===== F. ĐIỀU CHỈNH QUỸ LƯƠNG ===== -->
+  <div class="section"><div class="bar">F. Điều chỉnh quỹ lương</div></div>
+  <div class="card"><div class="body">
+    <!-- Quỹ lương khoán trước điều chỉnh -->
+    <h3 style="margin:0 0 16px 0;text-align:center;color:var(--blue-600)">Quỹ lương khoán trước điều chỉnh</h3>
+    <div class="fund-before-adjust">
+      <div class="fund-card">
+        <div class="fund-title">Rung ép</div>
+        <div class="fund-amount">1,154,488,928 đ</div>
+      </div>
+      <div class="fund-card">
+        <div class="fund-title">Mài</div>
+        <div class="fund-amount">272,956,641 đ</div>
+      </div>
+    </div>
+
+    <!-- Bảng điều chỉnh -->
+    <h3 style="margin:20px 0 12px 0;color:var(--blue-600)">Điều chỉnh quỹ lương</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nội dung</th>
+            <th class="right">Quỹ lương RE</th>
+            <th class="right">Quỹ lương Mài</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Quỹ lương còn dư tháng trước gửi lại</td><td class="right">0</td><td class="right">0</td></tr>
+          <tr><td>Quỹ lương gửi lại cho các tháng sau</td><td class="right">0</td><td class="right red">(2,500,000)</td></tr>
+          <tr><td>Quỹ lương trả nợ công ty</td><td class="right">0</td><td class="right">0</td></tr>
+          <tr><td>Vay lương công ty</td><td class="right">0</td><td class="right">0</td></tr>
+          <tr class="tot"><td><strong>Quỹ lương sau điều chỉnh</strong></td><td class="right blue"><strong>1,154,488,928</strong></td><td class="right blue"><strong>272,956,641</strong></td></tr>
+          <tr><td>Quỹ lương khuyến khích sản xuất</td><td class="right">1,500,000</td><td class="right">0</td></tr>
+          <tr class="final-highlight"><td><strong>Quỹ lương còn lại</strong></td><td class="right"><strong>1,150,988,928</strong></td><td class="right"><strong>272,956,641</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div></div>
+
+  <!-- ===== TỔNG QUỸ LƯƠNG CÒN LẠI (HERO SECTION) ===== -->
+  <div class="hero-section">
+    <div class="hero-subtitle">TỔNG QUỸ LƯƠNG CÒN LẠI</div>
+    <div class="hero-number">1,423,945,569 đ</div>
+    <div class="hero-subtitle">Sẵn sàng phân bổ cho các bộ phận</div>
+  </div>
+
+  <!-- ===== BẢNG TỔNG HỢP CÁC KHOẢN ===== -->
+  <div class="card"><div class="body breakdown-table">
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Khoản mục</th>
+            <th class="right">Rung ép (đ)</th>
+            <th class="right">Mài (đ)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Doanh thu ban đầu</td><td class="right positive">936,627,600</td><td class="right positive">249,458,122</td></tr>
+          <tr><td>Chất lượng (B)</td><td class="right negative">(36,809,405.48)</td><td class="right">0</td></tr>
+          <tr><td>Vệ sinh & Bảo dưỡng (C)</td><td class="right negative">(15,347,218)</td><td class="right negative">(15,347,218)</td></tr>
+          <tr><td>Chi phí sản xuất (D)</td><td class="right negative">(16,717,890.54)</td><td class="right negative">(12,176,355.83)</td></tr>
+          <tr><td>Chi phí phát sinh (E)</td><td class="right positive">253,800,000</td><td class="right positive">21,600,000</td></tr>
+          <tr><td>Điều chỉnh (F)</td><td class="right">0</td><td class="right negative">(2,500,000)</td></tr>
+          <tr><td>Khuyến khích sản xuất</td><td class="right negative">(1,500,000)</td><td class="right">0</td></tr>
+          <tr class="tot"><td><strong>Tổng quỹ lương cuối cùng</strong></td><td class="right positive"><strong>1,150,988,928</strong></td><td class="right positive"><strong>272,956,641</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div></div>
+
+  <!-- ===== PHẦN PHÂN BỔ CHI TIẾT ===== -->
+  
+  <!-- Tổng hợp -->
+  <div class="section"><div class="bar">Tổng hợp phân bổ</div></div>
+  <div class="card"><div class="body">
     <div class="table-wrap">
       <table>
         <colgroup><col><col style="width:22%"><col style="width:26%"></colgroup>
@@ -182,9 +549,9 @@ input[type="number"]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0
 const fmt = n => Number(n||0).toLocaleString('vi-VN');
 const toNum = v => (typeof v==='number')?v:(Number(String(v||'').replace(/[^\d.-]/g,''))||0);
 
-/* ===== Quỹ còn lại ===== */
-const FUND_RE  = 1150988928;
-const FUND_MAI = 272956641;
+/* ===== Quỹ cuối cùng (từ tính toán tất cả các phần A,B,C,D,E,F) ===== */
+const FUND_RE_FINAL  = 1150988928;
+const FUND_MAI_FINAL = 272956641;
 
 /* ===== Data (mặc định) ===== */
 const CN_ROWS = [
@@ -197,7 +564,6 @@ const CN_ROWS = [
 ];
 
 const QL_ROWS = [
-  // name, groupRef, kpi, hsl (hệ số lương), hsk (hệ số khoán), p3, days, people, manager
   { name:'Trưởng đơn vị',      groupRef:'TX', kpi:1.00, hsl:50, hsk:4.0, p3:1.00, days:22, people:1, manager:true  },
   { name:'Phó trưởng đơn vị',  groupRef:'TX', kpi:1.00, hsl:30, hsk:3.5, p3:1.00, days:22, people:1, manager:true  },
   { name:'Khối kỹ sư Mài',     groupRef:'Mài',kpi:1.02, hsl:20, hsk:1.5, p3:1.00, days:22, people:1, manager:false },
@@ -328,9 +694,9 @@ function computeAll(){
   CN_ROWS.forEach((r,i)=>{
     const pct = toNum(r.pct)/100;
     let fundPart = 0;
-    if(r.source==='RE')  fundPart = FUND_RE * pct;
-    if(r.source==='Mài') fundPart = FUND_MAI * pct;
-    if(r.source==='TX')  fundPart = (FUND_RE + FUND_MAI) * pct;
+    if(r.source==='RE')  fundPart = FUND_RE_FINAL * pct;
+    if(r.source==='Mài') fundPart = FUND_MAI_FINAL * pct;
+    if(r.source==='TX')  fundPart = (FUND_RE_FINAL + FUND_MAI_FINAL) * pct;
 
     document.getElementById(`cn-base-${i}`).textContent = fmt(Math.round(fundPart));
     const ppl = toNum(r.people);
@@ -354,8 +720,8 @@ function computeAll(){
   document.getElementById('cnFund').textContent      = fmt(Math.round(sumFundCN));
   document.getElementById('cnPeople').textContent    = fmt(sumPeopleCN.toFixed(2));
   document.getElementById('cnAvgAll').textContent    = fmt(Math.round(avgCN_ALL));
-  document.getElementById('avgCNRungEp').textContent = fmt(Math.round(avgRungEp)); // Chỉ lương của dòng "Công nhân rung ép"
-  document.getElementById('avgCNMAI').textContent    = fmt(Math.round(avgMai)); // Chỉ lương của dòng "Công nhân mài hoàn thiện"
+  document.getElementById('avgCNRungEp').textContent = fmt(Math.round(avgRungEp));
+  document.getElementById('avgCNMAI').textContent    = fmt(Math.round(avgMai));
   document.getElementById('avgCNAll').textContent    = fmt(Math.round(avgCN_ALL));
 
   /* --- QL: Khoán --- */
@@ -367,7 +733,7 @@ function computeAll(){
   const BSC  = toNum(document.getElementById('defaultBSC').value)||0.93;
 
   QL_ROWS.forEach(r=>{
-    // Sửa tham chiếu: RE dùng lương TB của dòng "Công nhân rung ép", Mài dùng dòng "Công nhân mài hoàn thiện"
+    // Sử dụng lương TB của dòng cụ thể
     const ref = (r.groupRef==='RE') ? avgRungEp : (r.groupRef==='Mài') ? avgMai : avgCN_ALL;
     const ratioDay = (toNum(r.days)||0)/std;
     const people   = toNum(r.people)||0;
@@ -415,8 +781,6 @@ function computeAll(){
 }
 
 /* ===== Init ===== */
-document.getElementById('fundRE').textContent = fmt(FUND_RE);
-document.getElementById('fundMAI').textContent= fmt(FUND_MAI);
 renderCN();
 renderQLInput();
 ['unit','std','defaultBSC'].forEach(id=>document.getElementById(id).addEventListener('input',computeAll));
